@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>47 GATES</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            height: 70px;
+        }
+        .logo {
+            height: 50px;
+        }
+        .nav-link {
+            text-decoration: none;
+            color: white;
+            font-weight: 400;
+            position: relative;
+            padding: 12px 24px;
+            background: white;
+            color: black;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.3s ease;
+        }
+        .nav-link::after {
+            content: "";
+            display: block;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .nav-link:hover {
+            transform: scale(1.1);
+        }
+        .header {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 60px 0;
+            letter-spacing: 2px;
+        }
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+        .song {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .song.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .cover {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+        .cover:hover {
+            transform: scale(1.05);
+        }
+        .title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+        .streams {
+            font-size: 14px;
+            color: gray;
+            margin-top: 5px;
+        }
+        .toggle-btn {
+            margin-top: 30px;
+            padding: 12px 24px;
+            background: white;
+            color: black;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.3s ease;
+        }
+        .toggle-btn:hover {
+            transform: scale(1.1);
+        }
+        .biography {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        .biography:hover {
+            transform: scale(1.02);
+        }
+        .biography img {
+            width: 150px;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            margin-right: 15px;
+        }
+        .quote-box {
+            width: 100%;
+            padding: 0;
+            background-color: transparent;
+            box-shadow: none;
+        }
+        .quote-box blockquote {
+            font-size: 18px;
+            font-style: italic;
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+        .quote-box footer {
+            font-weight: bold;
+            margin-top: 10px;
+            color: white;
+        }
+        .quote-box:hover blockquote {
+            color: #fff; /* Change text color on hover */
+        }
+        .from-artists {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 40px 0;
+            letter-spacing: 2px;
+        }
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 40px;
+        }
+        .footer-nav p {
+            color: white;
+            font-weight: 400;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #1a1a1a;
+            padding: 30px;
+            width: 400px;
+            color: white;
+            text-align: left;
+            position: relative;
+        }
+        .modal-content h2 {
+            margin-top: 0;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #aaa;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .form-input {
+            width: 93%;
+            padding: 12px;
+            margin-top: 10px;
+            background-color: black;
+            color: white;
+            border: 2px solid white;
+            border-radius: 0;
+            font-size: 14px;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #666;
+        }
+        .form-button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            background-color: #fff;
+            color: black;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            border-radius: 0;
+            transition: transform 0.2s ease, opacity 0.3s ease;
+        }
+        .form-button:hover {
+            background-color: #ccc;
+            transform: scale(1.04);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <img src="logo.png" alt="47 GATES RECORDS" class="logo">
+        <button id="contactBtn" class="nav-link">GET IN TOUCH</button>
+    </nav>
+
+    <h1 class="header">DISCOGRAPHY</h1>
+
+    <div class="song-grid" id="songGrid"></div>
+
+    <button class="toggle-btn" id="toggleBtn">Load More</button>
+
+    <!-- FROM THE ARTISTS Header -->
+    <h2 class="from-artists">FROM THE ARTISTS</h2>
+
+    <!-- Biography Section -->
+    <section class="biography">
+        <img src="pfp.png" alt="Artist 1">
+        <div class="quote-box">
+            <blockquote>
+                "47™  allowed me to gain control & freedom over my career, on top of countless listener growth!"
+            </blockquote>
+            <footer>- 2ry</footer>
+        </div>
+    </section>
+
+    <section class="biography">
+        <img src="pfp2.png" alt="Artist 2">
+        <div class="quote-box">
+            <blockquote>
+                "Great team, great support & amazing management..! #HIGHAS47™GATES"
+            </blockquote>
+            <footer>- Virgil?</footer>
+        </div>
+    </section>
+
+    <section class="biography">
+        <img src="pfp3.png" alt="Artist 3">
+        <div class="quote-box">
+            <blockquote>
+                "100% royalties & Full copyright ownership guaranteed to us artists.. Perfection."
+            </blockquote>
+            <footer>- SyreemPsycho</footer>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer-nav">
+        <p>&copy; 2025 47 GATES RECORDS. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Modal functionality
+        const contactBtn = document.getElementById("contactBtn");
+        const modal = document.createElement("div");
+        modal.classList.add("modal");
+
+        const modalContent = document.createElement("div");
+        modalContent.classList.add("modal-content");
+
+        const closeBtn = document.createElement("span");
+        closeBtn.classList.add("close-btn");
+        closeBtn.textContent = "×";
+
+        const contactForm = `
+            <h2>CONTACT US</h2>
+            <form>
+                <label for="email">Email:</label>
+                <input type="email" id="email" class="form-input" placeholder="" required>
+                <label for="message">Message:</label>
+                <textarea id="message" class="form-input" placeholder="" rows="4" required></textarea>
+                <button type="submit" class="form-button">Submit</button>
+            </form>
+        `;
+
+        modalContent.innerHTML = contactForm;
+        modalContent.appendChild(closeBtn);
+        modal.appendChild(modalContent);
+
+        document.body.appendChild(modal);
+
+        contactBtn.addEventListener("click", () => {
+            modal.style.display = "flex";
+        });
+
+        closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+
+        const songs = [
+            { cover: "/47cdn/cover.jpg", title: "LUVME!", streams: -1000 }
+        ];
+
+        let isExpanded = false;
+
+        function formatStreams(number) {
+            return number.toLocaleString() + " STREAMS";
+        }
+
+        function shuffleArray(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function createSongElement(song) {
+            const songDiv = document.createElement("div");
+            songDiv.classList.add("song");
+
+            songDiv.innerHTML = `
+                <img src="${song.cover}" class="cover" alt="${song.title}">
+                <div class="title">${song.title}</div>
+                <div class="streams">${formatStreams(song.streams)}</div>
+            `;
+
+            return songDiv;
+        }
+
+        function loadSongs(expand) {
+            const songGrid = document.getElementById("songGrid");
+            songGrid.innerHTML = "";
+
+            let displayedSongs = expand ? songs : shuffleArray([...songs]).slice(0, 3);
+
+            displayedSongs.forEach((song, index) => {
+                const songElement = createSongElement(song);
+                songGrid.appendChild(songElement);
+                
+                setTimeout(() => {
+                    songElement.classList.add("visible");
+                }, index * 150);
+            });
+
+            document.getElementById("toggleBtn").textContent = expand ? "Show Less" : "Load More";
+            isExpanded = expand;
+        }
+
+        document.getElementById("toggleBtn").addEventListener("click", () => {
+            loadSongs(!isExpanded);
+        });
+
+        loadSongs(false);
+    </script>
+</body>
+</html>
