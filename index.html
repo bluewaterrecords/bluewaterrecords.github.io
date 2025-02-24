@@ -60,6 +60,34 @@
             margin: 60px 0;
             letter-spacing: 2px;
         }
+        .newestRelease {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 650px;
+            margin: 40px auto;
+            border-radius: 6px;
+            transition: transform 0.3s ease-in-out;
+            
+        }
+        .newestRelease:hover {
+            transform: scale(1.02);
+        }
+        .newestRelease img {
+            width: 130px;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            margin-right: 10px;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+        #latestStreams {
+            color: grey;
+            font-size: medium;
+        }
+        .quote-box {
+            text-align: left;
+        }
         .song-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -146,6 +174,7 @@
             font-weight: bold;
             margin-top: 10px;
             color: white;
+            margin-left: 250px;
         }
         .quote-box:hover blockquote {
             color: #fff; /* Change text color on hover */
@@ -235,10 +264,21 @@
 
     <nav class="navbar">
         <img src="logo.png" alt="47 GATES RECORDS" class="logo">
-        <button id="contactBtn" class="nav-link">GET IN TOUCH!</button>
+        <button id="contactBtn" class="nav-link">GET IN TOUCH</button>
     </nav>
 
     <h1 class="header">DISCOGRAPHY</h1>
+
+        <h2 class="Latest-Header">LATEST RELEASE</h2>
+    <section class="newestRelease" id="latestRelease">
+        <img src="" alt="Latest Release Cover" id="latestCover">
+        <div class="quote-box">
+            <h2 id="latestTitle">Loading latest release...</h2>
+            <p id="latestStreams"></p>
+        </div>
+    </section>
+
+    <h2 class="songHeader">Popular Releases</h2>
 
     <div class="song-grid" id="songGrid"></div>
 
@@ -328,8 +368,8 @@
         });
 
         const songs = [
-            { cover: "/47cdn/cover1.jpg", title: "LUVME!", streams: -1000 },
-            { cover: "/47cdn/cover2.jpg", title: "help?", streams: -1000 }
+            { cover: "/47cdn/cover1.jpg", title: "LUVME!", streams: -1000, new: false },
+            { cover: "/47cdn/cover2.jpg", title: "help?", streams: -1000, new: true }
         ];
 
         let isExpanded = false;
@@ -353,6 +393,15 @@
             `;
 
             return songDiv;
+        }
+
+        function latestRelease() {
+            const latestSong = songs.find(song => song.new);
+            if (latestSong) {
+                document.getElementById("latestCover").src = latestSong.cover;
+                document.getElementById("latestTitle").textContent = latestSong.title;
+                document.getElementById("latestStreams").textContent = formatStreams(latestSong.streams);
+            }
         }
 
         function loadSongs(expand) {
@@ -379,6 +428,7 @@
         });
 
         loadSongs(false);
+        latestRelease();
     </script>
 </body>
 </html>
